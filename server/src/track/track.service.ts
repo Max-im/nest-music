@@ -30,8 +30,8 @@ export class TrackService {
 
   async getOne(id: string): Promise<TrackEntity> {
     const track = await this.trackRepository.findOne({
-      where: { id },
       relations: { comments: true },
+      where: { id },
     });
 
     if (!track) throw new NotFoundException();
