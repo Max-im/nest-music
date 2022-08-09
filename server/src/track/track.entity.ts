@@ -16,6 +16,12 @@ export class TrackEntity {
   @Column()
   text: string;
 
+  @Column({ default: '' })
+  picture: string;
+
+  @Column({ default: '' })
+  audio: string;
+
   @Column({ default: 0 })
   listens: number;
 

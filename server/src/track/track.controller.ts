@@ -1,4 +1,16 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+  UploadedFiles,
+  UseInterceptors,
+} from '@nestjs/common';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { CommentEntity } from 'src/comment/comment.entity';
 import { CreateCommentDto } from 'src/comment/dto/create-comment.dto';
 import { DeleteResult } from 'typeorm';
@@ -11,18 +23,41 @@ export class TrackController {
   constructor(private readonly trackService: TrackService) {}
 
   @Post()
-  create(@Body() dto: CreateTrackDto): Promise<TrackEntity> {
-    return this.trackService.create(dto);
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'picture', maxCount: 1 },
+      { name: 'audio', maxCount: 1 },
+    ]),
+  )
+  create(
+    @UploadedFiles() files,
+    @Body() dto: CreateTrackDto,
+  ): Promise<TrackEntity> {
+    const { picture, audio } = files;
+    return this.trackService.create(dto, picture[0], audio[0]);
   }
 
   @Get()
-  getAll(): Promise<TrackEntity[]> {
-    return this.trackService.getAll();
+  getAll(
+    @Query('count') take: number,
+    @Query('offset') skip: number,
+  ): Promise<TrackEntity[]> {
+    return this.trackService.getAll(take, skip);
+  }
+
+  @Get('/search')
+  search(@Query('query') query: string): Promise<TrackEntity[]> {
+    return this.trackService.search(query);
   }
 
   @Get('/:id')
   getOne(@Param('id') id: string): Promise<TrackEntity> {
     return this.trackService.getOne(id);
+  }
+
+  @Put('/listen/:id')
+  listenTrack(@Param('id') id: string): Promise<TrackEntity> {
+    return this.trackService.listenTrack(id);
   }
 
   @Delete('/:id')
