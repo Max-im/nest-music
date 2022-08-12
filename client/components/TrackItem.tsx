@@ -20,8 +20,8 @@ const TrackItem: React.FC<TrackItemProps> = ({ track, active = false }) => {
       </IconButton>
       <img width={70} height={70} src={track.picture} />
       <Grid container direction="column" style={{ width: 200, margin: '0 10px' }}>
-        <p>{track.name}</p>
-        <p style={{ fontSize: 12, color: 'gray' }}>{track.text}</p>
+        <div>{track.name}</div>
+        <div style={{ fontSize: 12, color: 'gray' }}>{track.text}</div>
       </Grid>
       {active && <div>2:44 / 3:15</div>}
       <IconButton style={{ marginLeft: 'auto' }} onCLick={(e) => e.stopPropagation()}>
