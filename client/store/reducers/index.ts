@@ -7,13 +7,13 @@ const rootReducer = combineReducers({
 });
 
 export const reducer = (state, action) => {
-    if(action.type === HYDRATE) {
+    if (action.type === HYDRATE) {
         const nextState = {
-            ...state,
-            ...action.payload
+            ...state, // use previous state
+            ...action.payload, // apply delta from hydration
         }
-        if(state.count) nextState.count = state.count;
-        return nextState;
+        if (state.count) nextState.count = state.count // preserve count value on client side navigation
+        return nextState
     } else {
         return rootReducer(state, action)
     }
