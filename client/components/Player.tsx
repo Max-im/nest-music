@@ -28,17 +28,24 @@ const Player = () => {
   useEffect(() => {
     if (!audio) {
       audio = new Audio();
-      audio.src = track.audio;
+    } else {
+      setAudio();
+      play();
+    }
+  }, [active]);
+
+  const setAudio = () => {
+    if (active) {
+      audio.src = 'http://localhost:5000/' + active.audio;
       audio.volume = volume / 100;
       audio.onloadedmetadata = () => {
-        console.log(audio.duration,'lllllllll')
-        setDuration(audio.duration);
-      }
+        setDuration(Math.ceil(audio.duration));
+      };
       audio.ontimeupdate = () => {
-        setCurrentTime(audio.currentTime);
-      }
+        setCurrentTime(Math.ceil(audio.currentTime));
+      };
     }
-  }, []);
+  };
 
   const play = () => {
     if (pause) {
@@ -62,12 +69,14 @@ const Player = () => {
     audio.currentTime = inputNumber;
   };
 
+  if (!active) return null;
+
   return (
     <div className={styles.player}>
       <IconButton onClick={play}>{pause ? <PlayArrow /> : <Pause />}</IconButton>
       <Grid container direction="column" style={{ width: 200, margin: '0 10px' }}>
-        <div>{track.name}</div>
-        <div style={{ fontSize: 12, color: 'gray' }}>{track.text}</div>
+        <div>{active?.name}</div>
+        <div style={{ fontSize: 12, color: 'gray' }}>{active?.text}</div>
       </Grid>
       <TrackProgress left={currentTime} right={duration} onChange={changeCurrentTime} />
       <VolumeUp style={{ marginLeft: 'auto' }} />
