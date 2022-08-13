@@ -2,6 +2,7 @@ import React from 'react';
 import { Pause, PlayArrow, VolumeUp } from '../node_modules/@mui/icons-material/index';
 import { Grid, IconButton } from '../node_modules/@mui/material/index';
 import styles from '../styles/Player.module.scss';
+import { ITrack } from '../types/track';
 import TrackProgress from './TrackProgress';
 
 const Player = () => {
