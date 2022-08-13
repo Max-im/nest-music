@@ -1,17 +1,36 @@
 import React, { useState } from 'react';
 import MainLayout from '../../layouts/MainLayout';
-import { Grid, Card, Button } from '@mui/material';
+import { Grid, Button } from '@mui/material';
 import StepWrapper from '../../components/StepWrapper';
 import { TextField } from '../../node_modules/@mui/material/index';
 import FileUpload from '../../components/FileUpload';
+import { useInput } from '../../hooks/useInput';
+import axios from '../../node_modules/axios/index';
+import { useRouter } from '../../node_modules/next/router';
 
 export default function Create() {
+  const router = useRouter()
   const [activeStep, setActiveStep] = useState(0);
   const [picture, setPicture] = useState(null);
   const [audio, setAudio] = useState(null);
 
+  const name = useInput('');
+  const author = useInput('');
+  const text = useInput('');
+
   const next = () => {
-    setActiveStep((prev) => prev + 1);
+    if (activeStep !== 2) {
+      setActiveStep((prev) => prev + 1);
+    } else {
+      const formData = new FormData();
+      formData.append('name', name.value);
+      formData.append('artist', author.value);
+      formData.append('text', text.value);
+      formData.append('picture', picture);
+      formData.append('audio', audio);
+      axios.post('http://localhost:5000/tracks', formData)
+        .catch(err => console.log(err)).finally(() => router.push('/tracks')) 
+    }
   };
 
   const back = () => {
@@ -23,9 +42,9 @@ export default function Create() {
       <StepWrapper activeStep={activeStep}>
         {activeStep === 0 && (
           <Grid container direction={'column'} style={{ padding: 20 }}>
-            <TextField style={{ marginTop: 10 }} label={'Track name'} />
-            <TextField style={{ marginTop: 10 }} label={'Author'} />
-            <TextField style={{ marginTop: 10 }} label={'Text'} multiline rows={3} />
+            <TextField style={{ marginTop: 10 }} label={'Track name'} {...name} />
+            <TextField style={{ marginTop: 10 }} label={'Author'} {...author} />
+            <TextField style={{ marginTop: 10 }} label={'Text'} multiline rows={3} {...text} />
           </Grid>
         )}
         {activeStep === 1 && (
@@ -43,7 +62,7 @@ export default function Create() {
         <Button disabled={activeStep === 0} onClick={back}>
           Back
         </Button>
-        <Button disabled={activeStep === 2} onClick={next}>
+        <Button onClick={next}>
           Next
         </Button>
       </Grid>

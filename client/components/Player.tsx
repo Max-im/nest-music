@@ -4,22 +4,11 @@ import { useTypedSelector } from '../hooks/useTypedSelector';
 import { Pause, PlayArrow, VolumeUp } from '../node_modules/@mui/icons-material/index';
 import { Grid, IconButton } from '../node_modules/@mui/material/index';
 import styles from '../styles/Player.module.scss';
-import { ITrack } from '../types/track';
 import TrackProgress from './TrackProgress';
 
 let audio;
 
 const Player = () => {
-  const track: ITrack = {
-    id: 'c04ee10e-ede4-4539-98b7-007139428d79',
-    name: 'track-1',
-    artist: 'artist-1',
-    text: 'text-1',
-    listens: 0,
-    audio: 'http://localhost:5000/audio/5d80e799-c99e-401c-a248-0e917d854d3d.mp3',
-    picture: 'http://localhost:5000/image/45165c29-2998-4bfa-888f-7dc6c76531bf.jpg',
-    comments: [{ id: 1, username: 'one', text: 'lorem' }],
-  };
   const { pause, volume, duration, active, currentTime } = useTypedSelector(
     (state) => state.player
   );

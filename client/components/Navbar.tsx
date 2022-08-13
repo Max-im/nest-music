@@ -20,7 +20,6 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import { useRouter } from '../node_modules/next/router';
 
-
 const menuItems = [
   {text: 'Home', href: '/'},
   {text: 'Tracks', href: '/tracks'},

@@ -38,4 +38,4 @@ export default Index
 
 export const getServerSideProps = wrapper.getServerSideProps((store) => async ({req, res}) => {
   await store.dispatch(await fetchTracks());
-})
+});
