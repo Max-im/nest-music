@@ -4,7 +4,7 @@ import { Grid, Card, Button, Box } from '@mui/material';
 import { useRouter } from '../../node_modules/next/router';
 import TrackList from '../../components/TrackList';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
-import { NextThunkDispatch, wrapper } from '../../store/index';
+import { wrapper } from '../../store/index';
 import { fetchTracks } from '../../store/action-creators/track';
 
 const Index = () => {
@@ -18,7 +18,7 @@ const Index = () => {
   }
 
   return (
-    <MainLayout>
+    <MainLayout title="Track List | Nest Music">
       <Grid container justifyContent="center">
         <Card style={{ width: '900px' }}>
           <Box p={3}>

@@ -24,7 +24,7 @@ const TrackPage = ({ serverTrack }) => {
   };
 
   return (
-    <MainLayout>
+    <MainLayout title={"Track | Nest Music | " + track.name + ' - ' + track.artist} keywords={track.name+', '+track.artist}>
       <Button variant={'outlined'} style={{ fontSize: 32 }} onClick={() => router.push('/tracks')}>
         to tracks
       </Button>
