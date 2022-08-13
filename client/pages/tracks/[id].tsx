@@ -3,10 +3,25 @@ import { Grid, Button, TextField } from '@mui/material';
 import { useRouter } from '../../node_modules/next/router';
 import MainLayout from '../../layouts/MainLayout';
 import axios from 'axios';
+import { useInput } from '../../hooks/useInput';
+import { ITrack } from '../../types/track';
 
 const TrackPage = ({ serverTrack }) => {
-  const [track, setTrack] = useState(serverTrack);
+  const [track, setTrack] = useState<ITrack>(serverTrack);
   const router = useRouter();
+  const username = useInput('');
+  const text = useInput('');
+
+  const addComment = async () => {
+    try{
+      const response = await axios.post('http://localhost:5000/tracks/comment', {
+        username: username.value,
+        text: text.value,
+        trackId: track.id,
+      });
+      setTrack({...track, comments: [...track.comments, response.data]})
+    } catch(err){ console.log(err)} 
+  };
 
   return (
     <MainLayout>
@@ -24,9 +39,9 @@ const TrackPage = ({ serverTrack }) => {
       </Grid>
       <Grid container>
         <h3>Comments:</h3>
-        <TextField label="Name" fullWidth />
-        <TextField label="Comment" fullWidth multiline rows={4} />
-        <Button>Add Comment</Button>
+        <TextField label="Name" fullWidth {...username} />
+        <TextField label="Comment" fullWidth multiline rows={4} {...text} />
+        <Button onClick={addComment}>Add Comment</Button>
       </Grid>
       <div>
         {track.comments.map((comment) => (
@@ -46,7 +61,7 @@ export const getServerSideProps = async ({ params }) => {
   const response = await axios.get('http://localhost:5000/tracks/' + params.id);
   return {
     props: {
-      serverTrack: response.data
-    }
-  }
+      serverTrack: response.data,
+    },
+  };
 };
