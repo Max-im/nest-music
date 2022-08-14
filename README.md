@@ -2,11 +2,13 @@
 
 ## Features
 
-- nest
+- nestjs
+- typescript
 - postgres
 - typeorm
-- next
+- nextjs
 - react
+- redux
 
 ## Track
 
